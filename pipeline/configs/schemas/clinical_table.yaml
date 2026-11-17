@@ -1,0 +1,52 @@
+table_name: clinical_table
+sheet_name: Sheet1
+ignored_raw_fields:
+  - ICSIMII
+
+keys:
+  cycle_id:
+    - 总编号
+  art_id:
+    - ART号
+
+baseline_fields:
+  age: 女年龄(岁)
+  male_age: 男年龄(岁)
+  bmi: 女体重指数
+  infertility_duration: 不孕年限
+  afc: AFC
+  amh: 基础激素AMH
+  fsh: 基础激素FSH
+  lh: 基础激素LH
+  e2: 基础激素E2
+  p: 基础激素P
+  protocol: 促排方案
+  initial_gn_dose: 起始Gn剂量
+  total_gn_dose: GN总量
+  total_gn_days: GN天数
+
+context_fields:
+  procedure_date: 手术时间
+  transfer_date: 移植时间
+  et_embryo_count: ET胚胎
+  treatment_plan: 治疗方案
+  treatment_count: 治疗次数
+  fresh_treatment_count: 新鲜周期治疗次数
+  diagnosis_1: 诊断1
+  diagnosis_2: 诊断2
+  diagnosis_3: 诊断3
+  diagnosis_4: 诊断4
+  diagnosis_5: 诊断5
+  diagnosis_6: 诊断6
+  fertilization_method: 授精方式
+  complication_text: 并发症
+  gn_start_date: Gn启动时间
+  gn_start_cycle_day: Gn启动周期日
+
+targets:
+  oocytes: 获卵数
+  gv: GV
+  mi: MI
+  clinical_pregnancy: 临床妊娠
+  preterm_birth: 早产
+  term_birth: 足月产

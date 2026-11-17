@@ -1,0 +1,18 @@
+project_root: .
+
+reference_codebases:
+  local_predict_ovarian_response: ../代码/PredictOvarianResponse-main
+
+raw_data:
+  clinical_table: ../医院数据/20-24年不孕症患者临床资料.xlsx
+  monitoring_table: ../医院数据/20-24年不孕症患者排卵检测单加卵泡直径与数目.xlsx
+
+outputs:
+  interim_data_dir: data/interim
+  processed_data_dir: data/processed
+  profiles_dir: data/profiles
+  model_artifacts_dir: models/artifacts
+  evaluation_report_dir: evaluation/reports
+
+prototype:
+  app_entry: prototype/streamlit_app/app.py

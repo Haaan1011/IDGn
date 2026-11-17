@@ -1,0 +1,19 @@
+ui_version: v1
+
+pages:
+  - id: home_overview
+    title: 首页 / 总览页
+  - id: patient_snapshot_input
+    title: 患者输入页
+  - id: monitoring_timeline
+    title: 动态监测页
+  - id: layer2_intermediate
+    title: 中间结局预测页
+  - id: layer3_outcomes
+    title: 临床结局预测页
+  - id: layer1_strategy
+    title: 个体化推荐页
+  - id: explainability
+    title: 可解释性页
+  - id: model_compare_settings
+    title: 系统设置 / 模型对比页

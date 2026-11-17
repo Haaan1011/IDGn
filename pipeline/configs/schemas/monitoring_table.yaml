@@ -1,0 +1,46 @@
+table_name: monitoring_table
+sheet_pattern: 第{n}次
+sheet_range: [1, 15]
+
+keys:
+  cycle_id:
+    - 总编号
+  art_id:
+    - ART号
+  monitoring_date:
+    - 监测日期
+  monitoring_order:
+    - 监测顺序
+
+anchor_fields:
+  lmp_date: 末次月经
+  days_from_lmp: 监测日期-末次月经
+  interval_days: 间隔天数
+
+core_fields:
+  cycle_day: 周期第几天
+  gn_day: Gn第几天
+  e2: E2
+  lh: 血LH
+  p: P
+  fsh: FSH
+  endometrium: 内膜厚度
+
+medication_pattern:
+  name_field: 药品_{i}
+  class_field: 药品分类_{i}
+  unit_field: 单位_{i}
+  value_field: 药品值_{i}
+  frequency_field: 频次_{i}
+  days_field: 天数_{i}
+  total_amount_field: 总量_{i}
+  max_index: 7
+
+follicle_detail_pattern:
+  lateral_field: LR_{i}
+  order_field: ORDERNO_{i}
+  long_axis_field: 长径_{i}
+  short_axis_field: 横径_{i}
+  count_field: 数量_{i}
+  mean_diameter_field: 平均径线_{i}
+  max_index: 36

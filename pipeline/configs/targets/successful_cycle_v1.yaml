@@ -1,0 +1,100 @@
+task_version: successful_cycle_v1
+task_name: successful_treatment_cycle_definition
+cohort_flag: cohort_strict_eligible
+group_key: cycle_uid
+
+literature_reference:
+  citation: Kong N, Xia Y, Wang Z, et al. Journal of Translational Medicine. 2025;23:545.
+  doi: 10.1186/s12967-025-06562-8
+  pmid: 40375277
+  pmcid: PMC12079934
+  original_definition: A successful treatment cycle achieved 6-20 follicles with diameter >=14 mm on hCG trigger day.
+
+sources:
+  clinical_dataset: data/interim/clinical_standardized.csv
+  monitoring_visits_dataset: data/interim/monitoring_visits_standardized.csv
+  monitoring_medications_dataset: data/interim/monitoring_medications_long.csv
+  monitoring_follicles_dataset: data/interim/monitoring_follicles_long.csv
+  split_manifest: data/splits/split_manifest_v1.csv
+
+trigger_detection:
+  class_fields:
+    - medication_category
+    - medication_class
+  accepted_classes:
+    - hcg
+    - 人工合成hcg
+  name_field: medication_name
+  accepted_names:
+    - HCG
+    - Hcg
+    - 艾泽
+    - 丽珠（注射用绒促性素）
+    - (丽珠)注射用绒促性素
+    - 重组人绒促性素注射液(艾泽)
+  multiple_visit_rule: select_maximum_monitoring_order
+  expected_days_before_procedure: 2
+
+follicle_counting:
+  diameter_field: follicle_mean_diameter
+  fallback_diameter_fields:
+    - follicle_long_axis
+    - follicle_short_axis
+  count_field: follicle_count
+  threshold_mm: 14
+  lower_success_count: 6
+  upper_success_count: 20
+  threshold_sensitivity_mm:
+    - 13.5
+  strict_greater_than_sensitivity: true
+  plausible_max_diameter_mm_sensitivity: 40
+
+kong_process_label:
+  primary_label: kong_aligned_exact_success
+  primary_evaluable_rule: selected structured HCG trigger visit has same-visit follicle rows with valid effective diameter and count
+  fallback_proxy_label: kong_aligned_last_observed_proxy_success
+  fallback_proxy_rule:
+    trigger_without_follicles: last follicle visit strictly before selected trigger visit
+    no_structured_trigger: last follicle visit before procedure_date
+  strict_pre_trigger_sensitivity: last follicle visit strictly before selected trigger visit
+
+project_composite:
+  role: secondary_sensitivity_only
+  canonical_label: project_composite_success_secondary
+  weighting: none
+  combination_rule: logical_and
+  effectiveness:
+    field: mii
+    rule: greater_than
+    threshold: 0
+    interpretation: at least one mature oocyte recorded
+  safety_primary:
+    rule: no documented OHSS and retrieved oocytes <=20
+    documented_ohss_field: complication_text
+    documented_ohss_keyword: OHSS
+    retrieved_oocytes_field: oocytes
+    high_response_threshold: 20
+  benefit_primary:
+    field: live_birth
+    rule: equals
+    value: 1
+    interpretation: recorded live birth
+  sensitivity_versions:
+    - name: project_composite_success_recorded_clinical_pregnancy
+      change: replace recorded live birth with recorded clinical pregnancy
+    - name: project_composite_success_documented_ohss_only
+      change: safety excludes documented OHSS only and does not apply the retrieved-oocytes >20 proxy
+    - name: project_composite_success_exact_process_anchored
+      change: additionally require Kong-aligned exact process success
+    - name: project_composite_success_proxy_process_anchored
+      change: additionally require the all-cycle exact-or-proxy Kong process label
+
+outputs:
+  cycle_labels: data/processed/successful_cycle_labels_v1.csv
+  incidence: data/processed/successful_cycle_incidence_v1.csv
+  split_distribution: data/processed/successful_cycle_split_distribution_v1.csv
+  trigger_audit: data/processed/successful_cycle_trigger_audit_v1.csv
+  missingness_audit: data/processed/successful_cycle_missingness_audit_v1.csv
+  semantics_audit: data/processed/successful_cycle_semantics_audit_v1.csv
+  sensitivity_audit: data/processed/successful_cycle_sensitivity_v1.csv
+  build_summary: data/processed/successful_cycle_build_summary_v1.json

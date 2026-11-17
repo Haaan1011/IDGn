@@ -1,0 +1,34 @@
+cohort_version: v1_long_protocol
+cohort_name: official_ivf_icsi_gnrha_superlong_first_cycle
+analysis_unit: cycle
+
+source_tables:
+  - clinical_table
+  - monitoring_table
+
+source_metadata:
+  source_year_range: [2020, 2024]
+
+inclusion:
+  official_filters:
+    - 治疗方案 ∈ [IVF, ICSI, PESA-ICSI, TESA-ICSI, 供精-IVF]
+    - GnRH-a超长方案
+    - 治疗次数 = 1
+  treatment_plan_allowed_values:
+    - IVF
+    - ICSI
+    - PESA-ICSI
+    - TESA-ICSI
+    - 供精-IVF
+  protocol_exact_values:
+    - GnRH-a超长方案
+  first_treatment_field: treatment_count
+  first_treatment_value: 1
+
+exclusion:
+  missing_core_identifier: true
+
+layer_constraints:
+  layer3_exclude_embryo_transfer_by_default: true
+  allow_dynamic_snapshots: true
+  require_patient_or_cycle_level_split: true

@@ -1,0 +1,28 @@
+model_field	feature_type	clinical_variable	unit
+age	static	Female age	years
+bmi	static	Body mass index	kg/m²
+amh	static	Anti-Müllerian hormone	ng/mL
+afc	static	Antral follicle count	count
+basal_fsh	static	Basal serum FSH	IU/L
+basal_lh	static	Basal serum LH	IU/L
+basal_e2	static	Basal serum estradiol	pg/mL
+basal_p	static	Basal serum progesterone	ng/mL
+infertility_duration	static	Infertility duration	years
+stim_day	dynamic	Stimulation day	days
+monitoring_order	dynamic	Monitoring visit	order
+current_e2	dynamic	Current serum estradiol	pg/mL
+current_lh	dynamic	Current serum LH	IU/L
+current_p	dynamic	Current serum progesterone	ng/mL
+current_fsh	dynamic	Current serum FSH	IU/L
+current_endometrium	dynamic	Endometrial thickness	mm
+total_follicle_count	dynamic	Total follicle count	count
+max_follicle_diameter	dynamic	Maximum follicular diameter	mm
+mean_follicle_diameter	dynamic	Mean follicular diameter	mm
+follicle_count_lt_10	dynamic	Number of follicles sized <10 mm	count
+follicle_count_10_12	dynamic	Number of follicles sized 10–12 mm	count
+follicle_count_13_15	dynamic	Number of follicles sized 13–15 mm	count
+follicle_count_16_18	dynamic	Number of follicles sized 16–18 mm	count
+follicle_count_gt_18	dynamic	Number of follicles sized >18 mm	count
+current_fsh_daily_dose	dynamic	Previous FSH dose	IU/day
+current_lh_daily_dose	dynamic	Previous LH dose	IU/day
+current_hmg_daily_dose	dynamic	Previous HMG dose	IU/day

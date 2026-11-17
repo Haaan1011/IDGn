@@ -1,0 +1,169 @@
+experiment_version: ohss_safety_warning_v1
+task_name: ohss_safety_warning_score
+display_name_cn: OHSS 相关安全预警风险评分
+seed: 42
+paths:
+  target_config: configs/targets/ohss_safety_warning_v1.yaml
+  dataset: data/processed/ohss_safety_warning_snapshot_dataset.csv
+  feature_manifest: data/processed/ohss_safety_warning_feature_manifest.json
+  split_manifest: data/splits/split_manifest_v1.csv
+  model_root: models/ohss_safety_warning
+  result_root: results/ohss_safety_warning
+labels:
+  primary: ohss_related_safety_warning
+  strict: strict_ohss_safety_warning
+selection:
+  primary_metric: average_precision
+  secondary_metric: brier
+  score_formula: cycle_balanced_average_precision_then_brier
+calibration:
+  low_event_positive_cycle_threshold: 100
+  low_event_method: platt
+  candidate_methods:
+    - platt
+  selection_metric: brier
+evaluation:
+  exploratory_thresholds:
+    - 0.10
+    - 0.20
+    - 0.30
+    - 0.50
+  quantiles:
+    - 5
+    - 10
+  shap_sample_limit: 2000
+  shap_background_limit: 200
+feature_policy:
+  allowed_features:
+    - age
+    - male_age
+    - bmi
+    - infertility_duration
+    - diagnosis_primary_secondary
+    - afc
+    - amh
+    - basal_fsh
+    - basal_lh
+    - basal_e2
+    - basal_p
+    - protocol
+    - initial_gn_dose
+    - treatment_count
+    - cycle_day
+    - gn_day
+    - monitoring_order
+    - visits_seen
+    - days_since_previous_visit
+    - current_e2
+    - current_lh
+    - current_p
+    - current_fsh
+    - current_endometrium
+    - delta_e2
+    - delta_lh
+    - delta_p
+    - delta_fsh
+    - delta_endometrium
+    - total_follicle_count
+    - left_follicle_count
+    - right_follicle_count
+    - max_follicle_diameter
+    - mean_follicle_diameter
+    - mature_follicle_count
+    - mature_follicle_share
+    - large_follicle_share
+    - dominant_follicle_count
+    - follicle_count_lt_10
+    - follicle_count_10_12
+    - follicle_count_13_15
+    - follicle_count_16_18
+    - follicle_count_gt_18
+    - growing_follicle_count
+    - medium_plus_follicle_count
+    - ohss_follicle_load_score
+    - follicle_size_weighted_count
+    - follicle_maturity_index
+    - mid_follicle_share
+    - current_fsh_daily_dose
+    - current_lh_daily_dose
+    - current_hmg_daily_dose
+    - current_lh_like_hmg_daily_dose
+    - current_gn_dose
+    - previous_fsh_daily_dose
+    - previous_lh_daily_dose
+    - previous_hmg_daily_dose
+    - previous_lh_like_hmg_daily_dose
+    - previous_gn_dose
+    - current_fsh_share_gn
+    - lh_like_share_current_gn
+    - current_e2_per_gn
+    - gn_per_total_follicle
+    - gn_per_mature_follicle
+    - e2_per_mature_follicle
+    - e2_per_weighted_follicle
+    - p_lh_ratio
+    - delta_p_per_day
+    - delta_lh_per_day
+  forbidden_exact:
+    - target_oocytes
+    - target_mii
+    - target_ohss_flag
+    - target_clinical_pregnancy
+    - target_live_birth
+    - ohss_related_safety_warning
+    - strict_ohss_safety_warning
+    - oocytes
+    - mii
+    - gv
+    - mi
+    - clinical_pregnancy
+    - live_birth
+    - procedure_date
+    - transfer_date
+    - total_gn_dose
+    - total_gn_days
+    - cumulative_fsh_dose
+    - cumulative_lh_dose
+    - cumulative_hmg_dose
+    - cumulative_lh_like_hmg_dose
+    - cumulative_gn_dose
+    - follicle_per_1000iu_gn
+    - mature_follicle_per_1000iu_gn
+    - et_embryo_count
+  forbidden_prefixes:
+    - next_
+    - target_
+  forbidden_substrings:
+    - embryo
+    - transfer
+    - pregnancy
+    - live_birth
+    - complication
+    - retrieved
+models:
+  logistic_regression:
+    max_iter: 3000
+    class_weight: balanced
+  lightgbm:
+    n_estimators: 450
+    learning_rate: 0.03
+    num_leaves: 23
+    min_child_samples: 60
+    subsample: 0.85
+    colsample_bytree: 0.85
+    reg_lambda: 6.0
+    class_weight: balanced
+  xgboost:
+    n_estimators: 450
+    learning_rate: 0.03
+    max_depth: 3
+    min_child_weight: 5
+    subsample: 0.85
+    colsample_bytree: 0.85
+    reg_lambda: 6.0
+  catboost:
+    iterations: 450
+    learning_rate: 0.03
+    depth: 5
+    l2_leaf_reg: 8.0
+    auto_class_weights: Balanced

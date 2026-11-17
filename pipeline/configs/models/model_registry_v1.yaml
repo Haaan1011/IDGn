@@ -1,0 +1,26 @@
+model_set_version: v1
+
+layer1_strategy:
+  default_engine: candidate_action_scoring
+  candidate_models:
+    - rules_plus_outcome_scoring
+    - doctor_prescription_imitation_baseline
+
+layer2_intermediate:
+  oocytes:
+    task_type: regression
+    candidate_models: [xgboost, lightgbm, catboost, random_forest, elastic_net, svm]
+  mii:
+    task_type: regression
+    candidate_models: [xgboost, lightgbm, catboost, random_forest, elastic_net, svm]
+  ohss:
+    task_type: classification
+    candidate_models: [xgboost, lightgbm, catboost, logistic_regression, random_forest, svm]
+
+layer3_outcomes:
+  clinical_pregnancy:
+    task_type: classification
+    candidate_models: [xgboost, lightgbm, catboost, logistic_regression, random_forest, svm]
+  live_birth:
+    task_type: classification
+    candidate_models: [xgboost, lightgbm, catboost, logistic_regression, random_forest, svm]

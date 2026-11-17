@@ -1,0 +1,12 @@
+split_version: v1
+source_dataset: data/processed/baseline_cycle_dataset.csv
+manifest_path: data/splits/split_manifest_v1.csv
+seed: 20260424
+train_ratio: 0.70
+valid_ratio: 0.15
+test_ratio: 0.15
+stratify_columns:
+  - target_live_birth
+  - target_ohss_flag
+group_key: cycle_uid
+split_column: split

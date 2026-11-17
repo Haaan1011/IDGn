@@ -1,0 +1,165 @@
+experiment_version: v1
+split:
+  source_dataset: data/processed/baseline_cycle_dataset.csv
+  manifest_path: data/splits/split_manifest_v1.csv
+  seed: 20260424
+  train_ratio: 0.7
+  valid_ratio: 0.15
+  test_ratio: 0.15
+  stratify_columns:
+  - target_live_birth
+  - target_ohss_flag
+training:
+  feature_manifest_path: data/processed/feature_manifest.json
+  snapshot_dataset_path: data/processed/snapshot_feature_dataset.csv
+  baseline_dataset_path: data/processed/baseline_cycle_dataset.csv
+  layer3_snapshot_dataset_path: data/processed/layer3_snapshot_dataset.csv
+  model_registry_path: configs/models/model_registry_v1.yaml
+  output_root: models/artifacts
+  tensorboard_dirname: tensorboard
+  use_latest_split_manifest: true
+tasks:
+- name: layer2_oocytes
+  dataset_key: snapshot
+  target: target_oocytes
+  task_type: regression
+  feature_set: snapshot
+  candidate_models:
+  - baseline
+  - xgboost
+  - lightgbm
+  - catboost
+  - random_forest
+  - svm
+  - mlp
+  primary_metric: rmse
+  feature_drop_columns:
+  - male_age
+  - male_factor_infertility_flag
+  - sperm_source_group
+  - fertilization_method
+  - growing_follicle_count
+  - medium_plus_follicle_count
+  - ohss_follicle_load_score
+- name: layer2_mii
+  dataset_key: snapshot
+  target: target_mii
+  task_type: regression
+  feature_set: snapshot
+  candidate_models:
+  - baseline
+  - xgboost
+  - lightgbm
+  - catboost
+  - random_forest
+  - svm
+  - mlp
+  primary_metric: rmse
+  feature_drop_columns:
+  - total_follicle_count
+  - left_follicle_count
+  - right_follicle_count
+  - follicle_count_lt_10
+  - afc
+  - male_age
+  - male_factor_infertility_flag
+  - sperm_source_group
+  - fertilization_method
+  - growing_follicle_count
+  - medium_plus_follicle_count
+  - ohss_follicle_load_score
+- name: layer2_ohss
+  dataset_key: snapshot
+  target: target_ohss_flag
+  task_type: classification
+  feature_set: snapshot
+  candidate_models:
+  - baseline
+  - xgboost
+  - lightgbm
+  - catboost
+  - random_forest
+  - svm
+  - mlp
+  primary_metric: average_precision
+  calibration_strategy: sigmoid
+  decision_threshold_strategy: maximize_f2
+  use_class_balancing: true
+  feature_drop_columns:
+  - delta_lh_per_day
+  - delta_p_per_day
+  - e2_per_mature_follicle
+  - e2_per_weighted_follicle
+  - fertilization_method
+  - follicle_maturity_index
+  - follicle_size_weighted_count
+  - large_to_mature_follicle_ratio
+  - male_age
+  - male_factor_infertility_flag
+  - mid_follicle_share
+  - p_lh_ratio
+  - sperm_source_group
+- name: layer3_live_birth
+  dataset_key: layer3_snapshot
+  target: target_live_birth
+  task_type: classification
+  feature_set: snapshot
+  candidate_models:
+  - baseline
+  - xgboost
+  - lightgbm
+  - catboost
+  - random_forest
+  - svm
+  - mlp
+  primary_metric: roc_auc
+  calibration_strategy: sigmoid
+  prediction_semantics: conditional_probability
+  conditional_on_task: layer3_clinical_pregnancy
+  conditional_on_target: target_clinical_pregnancy
+  row_filter:
+    column: target_clinical_pregnancy
+    values:
+    - 1
+  feature_drop_columns:
+  - delta_lh_per_day
+  - delta_p_per_day
+  - e2_per_mature_follicle
+  - e2_per_weighted_follicle
+  - follicle_maturity_index
+  - follicle_size_weighted_count
+  - growing_follicle_count
+  - large_to_mature_follicle_ratio
+  - medium_plus_follicle_count
+  - mid_follicle_share
+  - ohss_follicle_load_score
+  - p_lh_ratio
+- name: layer3_clinical_pregnancy
+  dataset_key: layer3_snapshot
+  target: target_clinical_pregnancy
+  task_type: classification
+  feature_set: snapshot
+  candidate_models:
+  - baseline
+  - xgboost
+  - lightgbm
+  - catboost
+  - random_forest
+  - svm
+  - mlp
+  primary_metric: roc_auc
+  calibration_strategy: sigmoid
+  skip_if_insufficient_labels: true
+  feature_drop_columns:
+  - delta_lh_per_day
+  - delta_p_per_day
+  - e2_per_mature_follicle
+  - e2_per_weighted_follicle
+  - follicle_maturity_index
+  - follicle_size_weighted_count
+  - growing_follicle_count
+  - large_to_mature_follicle_ratio
+  - medium_plus_follicle_count
+  - mid_follicle_share
+  - ohss_follicle_load_score
+  - p_lh_ratio

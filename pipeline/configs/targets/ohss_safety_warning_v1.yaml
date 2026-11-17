@@ -1,0 +1,36 @@
+task_version: ohss_safety_warning_v1
+task_name: ohss_safety_warning_score
+display_name_cn: OHSS 相关安全预警风险评分
+group_key: cycle_uid
+cohort_flag: cohort_strict_eligible
+sources:
+  clinical_dataset: data/interim/clinical_standardized.csv
+  snapshot_dataset: data/processed/snapshot_feature_dataset.csv
+  split_manifest: data/splits/split_manifest_v1.csv
+required_fields:
+  - cycle_uid
+  - complication_text
+  - oocytes
+label_definition:
+  primary_label: ohss_related_safety_warning
+  strict_label: strict_ohss_safety_warning
+  documented_ohss:
+    source_field: complication_text
+    keywords:
+      - OHSS
+  high_response_proxy:
+    source_field: oocytes
+    positive_rule: greater_than
+    threshold: 20
+  clinician_risk_control:
+    include_only_explicit_fields: true
+    candidate_fields: []
+    note: No reliable coasting, freeze-all, cabergoline, or explicit OHSS-risk intervention field is currently available.
+outputs:
+  cycle_labels: data/processed/ohss_safety_warning_cycle_labels.csv
+  snapshot_dataset: data/processed/ohss_safety_warning_snapshot_dataset.csv
+  feature_manifest: data/processed/ohss_safety_warning_feature_manifest.json
+  incidence_table: data/profiles/ohss_safety_warning_label_incidence.csv
+  source_audit: data/profiles/ohss_safety_warning_label_source_audit.csv
+  feature_audit: data/profiles/ohss_safety_warning_feature_audit.csv
+  build_report: data/profiles/ohss_safety_warning_label_build_report.md

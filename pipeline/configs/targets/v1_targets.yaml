@@ -1,0 +1,52 @@
+target_version: v1
+cohort_version: v1_long_protocol
+
+layer2:
+  oocytes:
+    source_table: clinical_table
+    raw_fields: [获卵数]
+    standardized_field: oocytes
+    processed_target_field: target_oocytes
+    task_type: regression
+    definition: 周期级获卵数
+    leakage_role: target_only
+  mii:
+    source_table: clinical_table
+    raw_fields: [获卵数, GV, MI]
+    standardized_field: mii
+    processed_target_field: target_mii
+    task_type: regression
+    definition: 周期级成熟卵母细胞数
+    derivation_formula: oocytes - gv - mi
+    leakage_role: target_only
+  ohss:
+    source_table: clinical_table
+    raw_fields: [并发症]
+    standardized_field: target_ohss_flag
+    processed_target_field: target_ohss_flag
+    task_type: classification
+    positive_rule: complication_text contains OHSS
+    leakage_role: target_only
+
+layer3:
+  clinical_pregnancy:
+    source_table: clinical_table
+    raw_fields: [临床妊娠]
+    standardized_field: clinical_pregnancy
+    processed_target_field: target_clinical_pregnancy
+    task_type: classification
+    leakage_role: target_only
+  live_birth:
+    source_table: clinical_table
+    raw_fields: [早产, 足月产]
+    standardized_field: live_birth
+    processed_target_field: target_live_birth
+    task_type: classification
+    positive_rule: preterm_birth + term_birth > 0
+    leakage_role: target_only
+
+constraints:
+  layer3_exclude_embryo_transfer_features: true
+  disallow_future_monitoring_values: true
+  processed_targets_must_be_built_from_interim_tables: true
+  target_fields_must_not_be_used_as_snapshot_inputs: true

@@ -1,0 +1,901 @@
+preprocessing_registry_version: kong_style_v1
+created_or_updated: 2026-05-06
+scope: "executed v1: same-cycle dynamic forward fill plus train-fold typed imputation/encoding/scaling"
+cohort_policy: "formal strict cohort only: IVF/ICSI + GnRH-a long protocol + treatment_count=1"
+layer3_boundary: "embryo/transfer variables remain excluded by default"
+forward_fill_policy:
+  status: "executed_in_sample_build_pipeline"
+  allowed_scope: "same cycle_uid only"
+  sort_keys:
+    - monitoring_order
+    - monitoring_date
+  rule: "forward fill dynamic variables within cycle_uid after chronological sorting; never backfill, never cross-cycle fill, never use next-visit or outcome columns"
+  residual_missing_fallback: "numeric median imputer and categorical Unknown imputer fit on train fold only"
+missingness_outputs:
+  column_audit_csv: "data/profiles/kong_preprocessing_v1_missingness_audit.csv"
+  registry_columns_csv: "data/profiles/kong_preprocessing_v1_registry_columns.csv"
+variable_groups:
+  identifier:
+    - column: "art_id"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "preserve for joins/splits/audit; do not impute; exclude as model predictor"
+    - column: "canonical_visit_key"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "preserve for joins/splits/audit; do not impute; exclude as model predictor"
+    - column: "cycle_id"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "preserve for joins/splits/audit; do not impute; exclude as model predictor"
+    - column: "cycle_uid"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "preserve for joins/splits/audit; do not impute; exclude as model predictor"
+    - column: "monitoring_date"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "preserve for joins/splits/audit; do not impute; exclude as model predictor"
+    - column: "next_monitoring_date"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.123652
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "preserve for joins/splits/audit; do not impute; exclude as model predictor"
+      leakage_risk_note: "future action/next-visit label for strategy audit; leakage if used as snapshot predictor"
+    - column: "visit_uid"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "preserve for joins/splits/audit; do not impute; exclude as model predictor"
+  static_continuous:
+    - column: "afc"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+    - column: "age"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+    - column: "amh"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.006415
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+    - column: "basal_e2"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.020745
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+    - column: "basal_fsh"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.001458
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+    - column: "basal_lh"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000942
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+    - column: "basal_p"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.097765
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+    - column: "bmi"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000809
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+    - column: "infertility_duration"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+    - column: "initial_gn_dose"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+    - column: "male_age"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+    - column: "observed_initial_gn_dose"
+      datasets:
+        - "baseline_cycle_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold median imputation; add missingness indicator when clinically meaningful or missing_rate > 10%"
+  static_categorical:
+    - column: "cohort_flag_used"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold most-frequent or explicit Unknown category; consider rare-level grouping"
+    - column: "diagnosis_primary_secondary"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.001402
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold most-frequent or explicit Unknown category; consider rare-level grouping"
+    - column: "fertilization_method"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold most-frequent or explicit Unknown category; consider rare-level grouping"
+    - column: "fresh_treatment_count"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold most-frequent or explicit Unknown category; consider rare-level grouping"
+    - column: "male_factor_infertility_flag"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold most-frequent or explicit Unknown category; consider rare-level grouping"
+    - column: "protocol"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold most-frequent or explicit Unknown category; consider rare-level grouping"
+    - column: "sperm_source_group"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold most-frequent or explicit Unknown category; consider rare-level grouping"
+    - column: "treatment_count"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "train-fold most-frequent or explicit Unknown category; consider rare-level grouping"
+  dynamic_continuous:
+    - column: "cumulative_fsh_dose"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "cumulative_gn_dose"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "cumulative_lh_like_hmg_dose"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "current_e2"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.237554
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "current_endometrium"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.161771
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "current_fsh"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.020836
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "current_fsh_daily_dose"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "current_gn_dose"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "current_lh"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.019743
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "current_lh_like_hmg_daily_dose"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "current_p"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.361358
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "cycle_day"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.004647
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "days_since_previous_visit"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.123652
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "delta_e2"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.468062
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "delta_endometrium"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.317134
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "delta_fsh"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.153662
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "delta_lh"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.152234
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "delta_p"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.577438
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "dominant_follicle_count"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.042159
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "follicle_count_10_12"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "follicle_count_13_15"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "follicle_count_16_18"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "follicle_count_gt_18"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "follicle_count_lt_10"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "gn_day"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.146433
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "large_follicle_share"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.042159
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "left_follicle_count"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "lh_like_hmg_medication_count"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "mature_follicle_count"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.042159
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "mature_follicle_share"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.042159
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "max_follicle_diameter"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.042159
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "mean_follicle_diameter"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.042189
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "monitoring_order"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "previous_gn_dose"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.123652
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "pure_fsh_medication_count"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "right_follicle_count"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "stimulation_gn_medication_count"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "total_follicle_count"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "total_medication_count"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "visit_gn_total_amount"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "visits_seen"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then train-fold median fallback if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+  dynamic_categorical:
+    - column: "has_next_visit"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then explicit Unknown level if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+    - column: "strategy_eligible_flag"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "Kong-style candidate: within-cycle forward fill only after sorting by cycle_uid and monitoring_order/monitoring_date; then explicit Unknown level if still missing"
+      leakage_risk_note: "dynamic feature: only current-or-prior information allowed; ffill must not cross cycle_uid or look forward"
+  target:
+    - column: "next_gn_dose"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.123652
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "no imputation; use only as task label/outcome/action audit; never as predictor in same task"
+      leakage_risk_note: "future action/next-visit label for strategy audit; leakage if used as snapshot predictor"
+    - column: "next_monitoring_order"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.123652
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "no imputation; use only as task label/outcome/action audit; never as predictor in same task"
+      leakage_risk_note: "future action/next-visit label for strategy audit; leakage if used as snapshot predictor"
+    - column: "next_visit_interval_days"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.123652
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "no imputation; use only as task label/outcome/action audit; never as predictor in same task"
+      leakage_risk_note: "future action/next-visit label for strategy audit; leakage if used as snapshot predictor"
+    - column: "observed_action_label"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.123652
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "no imputation; use only as task label/outcome/action audit; never as predictor in same task"
+      leakage_risk_note: "future action/next-visit label for strategy audit; leakage if used as snapshot predictor"
+    - column: "observed_gn_dose_delta"
+      datasets:
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.123652
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "no imputation; use only as task label/outcome/action audit; never as predictor in same task"
+      leakage_risk_note: "future action/next-visit label for strategy audit; leakage if used as snapshot predictor"
+    - column: "target_clinical_pregnancy"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.661635
+      drop_candidate_60pct: true
+      manual_confirmation_required: true
+      suggested_preprocessing: "no imputation; use only as task label/outcome/action audit; never as predictor in same task"
+      leakage_risk_note: "outcome target only; leakage if used as predictor"
+    - column: "target_live_birth"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "no imputation; use only as task label/outcome/action audit; never as predictor in same task"
+      leakage_risk_note: "outcome target only; leakage if used as predictor"
+    - column: "target_mii"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "no imputation; use only as task label/outcome/action audit; never as predictor in same task"
+      leakage_risk_note: "outcome target only; leakage if used as predictor"
+    - column: "target_ohss_flag"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "no imputation; use only as task label/outcome/action audit; never as predictor in same task"
+      leakage_risk_note: "outcome target only; leakage if used as predictor"
+    - column: "target_oocytes"
+      datasets:
+        - "baseline_cycle_dataset"
+        - "layer1_strategy_dataset"
+        - "layer2_snapshot_dataset"
+        - "layer3_snapshot_dataset"
+        - "snapshot_feature_dataset"
+      max_missing_rate: 0.000000
+      drop_candidate_60pct: false
+      manual_confirmation_required: false
+      suggested_preprocessing: "no imputation; use only as task label/outcome/action audit; never as predictor in same task"
+      leakage_risk_note: "outcome target only; leakage if used as predictor"
+  forbidden/leakage:

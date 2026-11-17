@@ -1,0 +1,170 @@
+feature_set_version: v1
+settings:
+  cohort_flag: cohort_strict_eligible
+  strategy_min_gn_day: 1
+  action_delta_threshold: 12.5
+baseline:
+  enabled:
+    - age
+    - bmi
+    - infertility_duration
+    - diagnosis_primary_secondary
+    - afc
+    - amh
+    - basal_fsh
+    - basal_lh
+    - basal_e2
+    - basal_p
+    - protocol
+    - initial_gn_dose
+    - male_age
+    - male_factor_infertility_flag
+    - sperm_source_group
+    - fertilization_method
+context:
+  enabled:
+    - treatment_count
+    - fresh_treatment_count
+monitoring:
+  enabled:
+    - monitoring_order
+    - cycle_day
+    - gn_day
+    - current_e2
+    - current_lh
+    - current_p
+    - current_fsh
+    - current_endometrium
+    - current_fsh_daily_dose
+    - current_lh_daily_dose
+    - current_hmg_daily_dose
+    - current_lh_like_hmg_daily_dose
+    - current_gn_dose
+    - cumulative_fsh_dose
+    - cumulative_lh_dose
+    - cumulative_hmg_dose
+    - cumulative_lh_like_hmg_dose
+    - cumulative_gn_dose
+    - delta_e2
+    - delta_lh
+    - delta_p
+    - delta_fsh
+    - delta_endometrium
+    - days_since_previous_visit
+    - visits_seen
+follicles:
+  enabled:
+    - total_follicle_count
+    - left_follicle_count
+    - right_follicle_count
+    - max_follicle_diameter
+    - mean_follicle_diameter
+    - mature_follicle_count
+    - mature_follicle_share
+    - large_follicle_share
+    - dominant_follicle_count
+    - follicle_count_lt_10
+    - follicle_count_10_12
+    - follicle_count_13_15
+    - follicle_count_16_18
+    - follicle_count_gt_18
+ohss_high_response:
+  enabled:
+    - growing_follicle_count
+    - medium_plus_follicle_count
+    - ohss_follicle_load_score
+  experimental:
+    - e2_per_total_follicle
+    - e2_per_growing_follicle
+    - e2_per_mature_follicle
+    - e2_follicle_load_interaction
+    - delta_e2_per_day
+    - e2_growth_ratio
+    - amh_afc_product
+    - high_response_reserve_index
+    - gn_per_growing_follicle
+    - lh_like_share_current_gn
+  candidate_keep:
+    - growing_follicle_count
+    - medium_plus_follicle_count
+    - ohss_follicle_load_score
+  rejected_rolled_back:
+    - e2_per_total_follicle
+    - e2_per_growing_follicle
+    - e2_per_mature_follicle
+    - e2_follicle_load_interaction
+    - delta_e2_per_day
+    - e2_growth_ratio
+    - amh_afc_product
+    - high_response_reserve_index
+    - gn_per_growing_follicle
+    - lh_like_share_current_gn
+layer2_regression:
+  enabled:
+    - follicle_size_weighted_count
+    - follicle_maturity_index
+    - mid_follicle_share
+    - large_to_mature_follicle_ratio
+    - e2_per_mature_follicle
+    - e2_per_weighted_follicle
+    - p_lh_ratio
+    - delta_p_per_day
+    - delta_lh_per_day
+    - gn_per_total_follicle
+    - gn_per_mature_follicle
+    - follicle_per_1000iu_gn
+    - mature_follicle_per_1000iu_gn
+    - current_fsh_share_gn
+    - lh_like_share_current_gn
+    - current_e2_per_gn
+  experimental:
+    - e2_per_total_follicle
+    - delta_e2_per_day
+    - e2_growth_ratio
+    - gn_per_total_follicle
+    - gn_per_mature_follicle
+    - follicle_per_1000iu_gn
+    - mature_follicle_per_1000iu_gn
+    - current_fsh_share_gn
+    - lh_like_share_current_gn
+    - current_e2_per_gn
+    - amh_afc_product
+    - reserve_age_index
+    - follicle_to_afc_ratio
+    - follicle_reserve_gap
+    - amh_follicle_interaction
+  candidate_keep:
+    - follicle_size_weighted_count
+    - follicle_maturity_index
+    - mid_follicle_share
+    - large_to_mature_follicle_ratio
+    - e2_per_mature_follicle
+    - e2_per_weighted_follicle
+    - p_lh_ratio
+    - delta_p_per_day
+    - delta_lh_per_day
+  rejected_rolled_back:
+    - hormone_maturity_for_oocytes
+    - oocytes_capacity_candidate_for_oocytes
+medication:
+  pure_fsh_class_keywords:
+    - fsh
+    - 果纳芬
+    - 普丽康
+    - 丽申宝
+  lh_class_keywords:
+    - lh
+    - 乐芮
+  hmg_class_keywords:
+    - hmg
+    - 高纯度HMG
+    - Gn(FSH+LH)
+    - 贺美奇
+  lh_like_hmg_class_keywords:
+    - lh
+    - hmg
+strategy:
+  candidate_actions:
+    - increase
+    - maintain
+    - decrease
