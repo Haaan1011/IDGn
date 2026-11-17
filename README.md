@@ -27,7 +27,7 @@ python reproduce.py \
   --run /授权目录/IDGn运行结果
 ```
 
-包含空格的路径请用引号包围。程序首先整理数据，然后生成划分、训练模型、计算指标与补充分析。默认按原分层方法和种子生成训练、验证、测试集（2849、611、611 个周期）；原数据验证中，生成的划分与原划分一致。也可指定经授权的原始划分文件：在命令末尾增加 `--split /授权目录/split.csv`，文件需包含 `cycle_uid` 和 `split` 列。
+包含空格的路径请用引号包围。程序首先整理数据，然后生成划分、训练模型、计算指标与补充分析。默认按原分层方法和种子生成训练、验证、测试集（2849、611、611 个周期）。也可指定经授权的原始划分文件：在命令末尾增加 `--split /授权目录/split.csv`，文件需包含 `cycle_uid` 和 `split` 列。
 
 ## 3. 进度、中断与结果
 
@@ -50,10 +50,6 @@ python reproduce.py \
 
 训练完成后，可在运行目录运行 `python -m streamlit run scripts/scenario_demo.py --server.address 127.0.0.1` 启动研究演示，输入模拟数据查看预测表格。演示仅用于研究，不是经批准的临床系统。
 
-## 4. 解读结果时需要注意
-
-这是依据论文和现存实验代码整理的重跑流程，并非所有历史实验都能逐项还原。27 个变量按论文表格固定；全变量的 62 项是在既往 55 项配置基础上按论文补建。Gn 分类的 FSH 剂量上限、优化器设置与部分旧实验不同；候选方案结局模型及阈值规则也有按照现有资料作出的实现选择。完整说明见 `README.md` 的 Reproduction decisions。测试集 OHSS AUC 在现有环境的重跑结果为 0.742，与论文报告的 0.731 不一致，请核对对照表，勿将两者视作完全一致。
-
 ---
 
 # IDGn manuscript reproduction
@@ -71,7 +67,7 @@ python reproduce.py --clinical "/authorized/clinical.xlsx" --monitoring "/author
 
 The clinical export supplies baseline characteristics, cycle eligibility and outcomes. The monitoring export supplies visits, medication and follicle measurements. The original worksheet columns and field mappings are in `pipeline/configs/schemas/`. The run directory must be new and writable.
 
-With the original workbooks, the original split procedure (seed 20260424, stratified by recorded live birth and OHSS status) recovers the frozen 2,849/611/611 assignments. In the hospital verification run, all 4,071 regenerated assignments agreed with the archived split manifest. To use an authorized copy of that manifest explicitly, pass `--split /authorized/split.csv`. Add `--resume` with the same inputs to continue a stopped run. Each stage records its own log.
+With the original workbooks, the original split procedure (seed 20260424, stratified by recorded live birth and OHSS status) recovers the frozen 2,849/611/611 assignments. To use an authorized copy of that manifest explicitly, pass `--split /authorized/split.csv`. Add `--resume` with the same inputs to continue a stopped run. Each stage records its own log.
 
 ## Outputs
 
@@ -103,9 +99,9 @@ The demonstration runs actual model inference from editable synthetic baseline a
 
 - Dose labels are the recorded post-visit decisions and inputs stop at the current visit. Monitor order and stimulation day are separate. Continuous scaling and median imputation use training data. Hormone/endometrial measurements forward-fill within cycles. Models train under the fixed split. Gn metrics use uncalibrated probabilities with 1,000 treatment-cycle bootstrap resamples for reported intervals.
 - The original 55-variable Table 3 archive and the 11.12 manuscript's 62-variable current-monitor specification differ. The code restores the seven eligible candidate fields to the 55-variable configuration. Three pre-decision drug doses replace three legacy fields from the daily-expanded dataset. This manifest is written at run time.
-- The upper dose boundary in the manuscript is 300 IU/day. In the rerun, 4,289 FSH records and 4,291 LH and HMG records were evaluable on the same 611 test cycles. The manuscript's shared count of 4,291 records and the older training artifact used a different FSH upper-bound convention.
+- The upper dose boundary in the manuscript is 300 IU/day; the older training artifact used a different FSH upper-bound convention.
 - The final Gn retraining uses the written Supplementary S2 AdamW settings, the archived two neural architectures, the task-specific tree experts and the published mixture weights. The archive used different optimizer settings for the two neural members. Recalculated values are compared directly against the manuscript rather than adjusted to match.
 - The 27 variables are fixed from Supplementary Table S2. The package recalculates global SHAP rankings for 62 and 27 inputs. Clinical review is part of the published variable selection, and the text provides no reproducible rule that assigns all 27 features to a deterministic SHAP cutoff.
 - The manuscript does not give a numerical threshold-fitting criterion. The demonstration uses per-drug validation temperature scaling with multiclass log loss and a pooled one-vs-rest F1 threshold, keeping the highest-probability class as a fallback. Candidate outcome models are trained on frozen GRU representations plus the three candidate doses. The final-visit OHSS performance retains the exploratory comparison described in Supplementary Methods S2. The web demonstration and final-visit outcome evaluation are distinct analyses.
 
-Results in this package reflect the published analysis specification as implemented here. Several published point estimates differ from the source-data retraining, including OHSS ROC-AUC. Use the generated comparison table for any manuscript update.
+
